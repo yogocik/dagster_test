@@ -1,0 +1,62 @@
+# https://docs.dagster.io/deployment/dagster-instance
+# this config manually sets the directory (`base_dir`) for Sqlite to store data in:
+storage:
+  sqlite:
+    base_dir: ./storage
+
+run_launcher:
+  module: dagster.core.launcher
+  class: DefaultRunLauncher
+
+# this second option manually specifies limits:
+run_coordinator:
+  module: dagster.core.run_coordinator
+  class: QueuedRunCoordinator
+  config:
+    max_concurrent_runs: 25
+
+# You could directly set the `base_dir` key
+compute_logs:
+  module: dagster.core.storage.local_compute_log_manager
+  class: LocalComputeLogManager
+  config:
+    base_dir: ./logs
+
+# example local_artifact_storage setup pointing to /var/shared/dagster directory
+local_artifact_storage:
+  module: dagster.core.storage.root
+  class: LocalArtifactStorage
+  config:
+    base_dir: "./artifacts"
+
+# Allows opting out of Dagster collecting usage statistics.
+telemetry:
+  enabled: false
+
+# Configures how long Dagster waits for code locations
+# to load before timing out.
+code_servers:
+  local_startup_timeout: 120
+
+
+# Configures how long Dagster keeps sensor / schedule tick data
+retention:
+  schedule:
+    purge_after_days: 30 # sets retention policy for schedule ticks of all types
+  sensor:
+    purge_after_days:
+      skipped: 5
+      failure: 15
+      success: 30 # keep success ticks indefinitely
+
+
+sensors:
+  use_threads: true
+  num_workers: 2
+  num_submit_workers: 2
+
+schedules:
+  use_threads: true
+  num_workers: 2
+  num_submit_workers: 2
+

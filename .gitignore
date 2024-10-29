@@ -1,0 +1,7 @@
+.env 
+/storage
+/logs 
+/artifacts
+/.logs_queue
+/.nux
+__pycache__

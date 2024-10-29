@@ -1,0 +1,13 @@
+# workspace.yaml
+
+load_from:
+  - python_file:
+      relative_path: src/pipelines/airbyte_staging/main.py
+      location_name: airbyte_staging
+#   - python_file:
+#       relative_path: main.py
+#       location_name: dbt_transformation
+#       working_directory: src/pipelines/dbt_transformation/
+  - python_file:
+      location_name: data_backup
+      relative_path: src/pipelines/data_backup/main.py 
